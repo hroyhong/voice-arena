@@ -448,28 +448,52 @@
       { id: 'warm-aunt', name: 'Warm-Hearted Aunt', provider: 'ElevenLabs' },
     ];
 
-    const STORAGE_KEY = 'voice-arena-votes';
+    // Supabase config
+    const SUPABASE_URL = 'https://owtymnnbgfduedaqazuk.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93dHltbm5iZ2ZkdWVkYXFhenVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg3Mzg5ODAsImV4cCI6MjA1NDMxNDk4MH0.2849pXFgbATcUedHM26Z2m0TYoy7clafQnvgZOv0xQs';
+    const headers = {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json'
+    };
 
-    function getVotes() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-      catch { return []; }
+    async function fetchVotes() {
+      try {
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/voice_votes?select=*&order=created_at.desc`,
+          { headers }
+        );
+        if (!res.ok) throw new Error(await res.text());
+        return await res.json();
+      } catch (err) {
+        console.error('Failed to fetch votes:', err);
+        return [];
+      }
     }
 
-    function setVotes(votes) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+    async function deleteVote(id) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/voice_votes?id=eq.${id}`, {
+          method: 'DELETE',
+          headers
+        });
+        await loadAndRender();
+      } catch (err) {
+        console.error('Failed to delete vote:', err);
+      }
     }
 
-    function deleteVote(index) {
-      const votes = getVotes();
-      votes.splice(index, 1);
-      setVotes(votes);
-      render();
-    }
-
-    function clearAll() {
-      if (confirm('Delete ALL votes? This cannot be undone.')) {
-        localStorage.removeItem(STORAGE_KEY);
-        render();
+    async function clearAll() {
+      if (!confirm('Delete ALL votes? This cannot be undone.')) return;
+      try {
+        // Delete all rows (neq filter matches everything)
+        await fetch(`${SUPABASE_URL}/rest/v1/voice_votes?id=gt.0`, {
+          method: 'DELETE',
+          headers
+        });
+        await loadAndRender();
+      } catch (err) {
+        console.error('Failed to clear votes:', err);
       }
     }
 
@@ -489,9 +513,7 @@
         ' ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     }
 
-    function render() {
-      const votes = getVotes();
-
+    function render(votes) {
       // Stats
       const tallies = {};
       VOICES.forEach(v => tallies[v.id] = 0);
@@ -559,8 +581,8 @@
             </div>
           </td>
           <td><div class="vote-note">${vote.note ? escapeHtml(vote.note) : '<span style="opacity:0.4">--</span>'}</div></td>
-          <td><span class="vote-time">${formatDate(vote.timestamp)}</span></td>
-          <td><button class="btn btn-danger btn-sm" onclick="deleteVote(${idx})">Delete</button></td>
+          <td><span class="vote-time">${formatDate(vote.created_at)}</span></td>
+          <td><button class="btn btn-danger btn-sm" onclick="deleteVote(${vote.id})">Delete</button></td>
         </tr>
       `).join('');
     }
@@ -571,9 +593,14 @@
       return div.innerHTML;
     }
 
+    async function loadAndRender() {
+      const votes = await fetchVotes();
+      render(votes);
+    }
+
     document.getElementById('clearAllBtn').addEventListener('click', clearAll);
 
-    render();
+    loadAndRender();
   </script>
 </body>
 </html>

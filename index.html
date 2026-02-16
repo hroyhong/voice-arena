@@ -635,20 +635,32 @@
       { id: 'warm-aunt', file: '1Chinese_(Mandarin)_Warm-HeartedAunt.mp3' },
     ];
 
+    // Supabase config
+    const SUPABASE_URL = 'https://owtymnnbgfduedaqazuk.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93dHltbm5iZ2ZkdWVkYXFhenVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg3Mzg5ODAsImV4cCI6MjA1NDMxNDk4MH0.2849pXFgbATcUedHM26Z2m0TYoy7clafQnvgZOv0xQs';
+    const headers = {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    };
+
     let userName = '';
     let selected = new Set();
     let currentAudio = null;
     let currentCard = null;
 
-    const STORAGE_KEY = 'voice-arena-votes';
-    function getVotes() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-      catch { return []; }
-    }
-    function saveVote(name, picks, note) {
-      const votes = getVotes();
-      votes.push({ name, picks, note: note || '', timestamp: Date.now() });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+    async function saveVote(name, picks, note) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/voice_votes`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ name, picks, note: note || '' })
+        });
+        if (!res.ok) throw new Error(await res.text());
+      } catch (err) {
+        console.error('Failed to save vote:', err);
+      }
     }
 
     const nameInput = document.getElementById('nameInput');
@@ -806,12 +818,16 @@
       });
     }
 
-    submitBtn.addEventListener('click', () => {
+    submitBtn.addEventListener('click', async () => {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving...';
       const picks = [...selected];
       const note = noteInput.value.trim();
-      saveVote(userName, picks, note);
+      await saveVote(userName, picks, note);
       stopCurrentAudio();
       showThanks(picks);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit My Votes';
     });
 
     function showThanks(picks) {
