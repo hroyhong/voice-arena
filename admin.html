@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Arena — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #F6F1EB;
+      --card: #FFFDF9;
+      --border: #DDD5CB;
+      --accent: #008481;
+      --accent-light: #f0f7f6;
+      --accent-hover: #00726f;
+      --vermillion: #C04040;
+      --vermillion-light: #fdf0f0;
+      --text: #2C2420;
+      --text-secondary: #5C5650;
+      --text-muted: #8C8178;
+      --muted-bg: #EDE8E2;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow-card: 0 1px 4px rgba(44, 36, 32, 0.05);
+      --shadow-card-hover: 0 4px 16px rgba(44, 36, 32, 0.08);
+    }
+
+    body {
+      font-family: 'Crimson Pro', serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.2;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 600px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+    }
+    .btn:hover {
+      box-shadow: var(--shadow-card-hover);
+    }
+    .btn-danger {
+      background: var(--vermillion-light);
+      border-color: var(--vermillion);
+      color: var(--vermillion);
+    }
+    .btn-danger:hover {
+      background: var(--vermillion);
+      color: #fff;
+    }
+    .btn-accent {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .btn-accent:hover {
+      background: var(--accent-hover);
+    }
+    .btn-sm {
+      padding: 0.3rem 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    /* Summary stats */
+    .stats-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      flex: 1;
+      min-width: 140px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Results chart */
+    .results-chart {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .result-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .result-row:last-child { margin-bottom: 0; }
+
+    .result-rank {
+      width: 24px;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .result-row:first-child .result-rank { color: var(--accent); }
+
+    .result-letter {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--muted-bg);
+      border-radius: var(--radius-sm);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .result-row:first-child .result-letter {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .result-name {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      min-width: 150px;
+      flex-shrink: 0;
+    }
+
+    .result-bar-track {
+      flex: 1;
+      height: 24px;
+      background: var(--muted-bg);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .result-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #6dcfcd);
+      border-radius: 4px;
+      min-width: 2px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .result-row:first-child .result-bar-fill {
+      background: linear-gradient(90deg, var(--accent), #00b4b0);
+    }
+
+    .result-count {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 40px;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .result-pct {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      min-width: 36px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Votes table */
+    .votes-table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .votes-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .votes-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+      background: var(--muted-bg);
+    }
+
+    .votes-table td {
+      padding: 0.7rem 1rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .votes-table tr:last-child td { border-bottom: none; }
+
+    .votes-table tr:hover td {
+      background: #faf7f3;
+    }
+
+    .vote-picks {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .vote-pick-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      background: var(--accent-light);
+      border: 1px solid #a8e0de;
+      border-radius: var(--radius-sm);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+
+    .vote-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .vote-time {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .brush-divider {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--text), transparent);
+      opacity: 0.12;
+      margin: 0.5rem auto 2rem;
+    }
+
+    /* Key/legend */
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .key-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .key-letter {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--muted-bg);
+      border-radius: var(--radius-sm);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .key-name {
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .result-name { min-width: 100px; font-size: 0.8rem; }
+      .votes-table th, .votes-table td { padding: 0.5rem 0.6rem; }
+      .result-pct { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <h1>Voice Arena Admin</h1>
+      <div class="header-actions">
+        <button class="btn btn-danger" id="clearAllBtn">Clear All Votes</button>
+        <a href="index.html" class="btn btn-accent">Back to Arena</a>
+      </div>
+    </div>
+    <div class="brush-divider"></div>
+
+    <!-- Stats -->
+    <div class="stats-row" id="statsRow"></div>
+
+    <!-- Key -->
+    <div class="section">
+      <div class="section-title">Voice Key</div>
+      <div class="key-grid" id="keyGrid"></div>
+    </div>
+
+    <!-- Results -->
+    <div class="section">
+      <div class="section-title">Results</div>
+      <div class="results-chart" id="resultsChart"></div>
+    </div>
+
+    <!-- Votes -->
+    <div class="section">
+      <div class="section-title">All Votes</div>
+      <div class="votes-table-wrap">
+        <table class="votes-table" id="votesTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Picks</th>
+              <th>Note</th>
+              <th>Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="votesBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const LABELS = 'ABCDEFGHIJ'.split('');
+
+    const VOICES = [
+      { id: 'male-qn-badao', name: 'QN Badao', provider: 'MiniMax' },
+      { id: 'female-chengshu', name: 'Chengshu Jingpin', provider: 'MiniMax' },
+      { id: 'lengdan-xiongzhang', name: 'Lengdan Xiongzhang', provider: 'MiniMax' },
+      { id: 'badao-shaoye', name: 'Badao Shaoye', provider: 'MiniMax' },
+      { id: 'tianxin-xiaoling', name: 'Tianxin Xiaoling', provider: 'MiniMax' },
+      { id: 'reliable-exec', name: 'Reliable Executive', provider: 'ElevenLabs' },
+      { id: 'news-anchor', name: 'News Anchor', provider: 'ElevenLabs' },
+      { id: 'lyrical-voice', name: 'Lyrical Voice', provider: 'ElevenLabs' },
+      { id: 'radio-host', name: 'Radio Host', provider: 'ElevenLabs' },
+      { id: 'warm-aunt', name: 'Warm-Hearted Aunt', provider: 'ElevenLabs' },
+    ];
+
+    const STORAGE_KEY = 'voice-arena-votes';
+
+    function getVotes() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch { return []; }
+    }
+
+    function setVotes(votes) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+    }
+
+    function deleteVote(index) {
+      const votes = getVotes();
+      votes.splice(index, 1);
+      setVotes(votes);
+      render();
+    }
+
+    function clearAll() {
+      if (confirm('Delete ALL votes? This cannot be undone.')) {
+        localStorage.removeItem(STORAGE_KEY);
+        render();
+      }
+    }
+
+    function getLetter(voiceId) {
+      const idx = VOICES.findIndex(v => v.id === voiceId);
+      return idx >= 0 ? LABELS[idx] : '?';
+    }
+
+    function getVoiceName(voiceId) {
+      const v = VOICES.find(v => v.id === voiceId);
+      return v ? v.name : voiceId;
+    }
+
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+        ' ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function render() {
+      const votes = getVotes();
+
+      // Stats
+      const tallies = {};
+      VOICES.forEach(v => tallies[v.id] = 0);
+      votes.forEach(v => v.picks.forEach(p => { if (tallies[p] !== undefined) tallies[p]++; }));
+      const topId = Object.entries(tallies).sort((a, b) => b[1] - a[1])[0];
+
+      document.getElementById('statsRow').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-value">${votes.length}</div>
+          <div class="stat-label">Total Votes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${new Set(votes.map(v => v.name)).size}</div>
+          <div class="stat-label">Unique Voters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${votes.length ? getLetter(topId[0]) : '--'}</div>
+          <div class="stat-label">Leading Voice${votes.length ? ` (${getVoiceName(topId[0])})` : ''}</div>
+        </div>
+      `;
+
+      // Key
+      document.getElementById('keyGrid').innerHTML = VOICES.map((v, i) => `
+        <div class="key-item">
+          <div class="key-letter">${LABELS[i]}</div>
+          <span class="key-name">${v.name}</span>
+        </div>
+      `).join('');
+
+      // Results chart
+      const maxVotes = Math.max(...Object.values(tallies), 1);
+      const totalPicks = votes.length * 2 || 1;
+      const sorted = VOICES.map((v, i) => ({ ...v, letter: LABELS[i], count: tallies[v.id] }))
+        .sort((a, b) => b.count - a.count);
+
+      document.getElementById('resultsChart').innerHTML = sorted.length === 0
+        ? '<div class="empty-state">No votes yet</div>'
+        : sorted.map((v, i) => `
+          <div class="result-row">
+            <div class="result-rank">${i + 1}</div>
+            <div class="result-letter">${v.letter}</div>
+            <div class="result-name">${v.name}</div>
+            <div class="result-bar-track">
+              <div class="result-bar-fill" style="width: ${v.count / maxVotes * 100}%"></div>
+            </div>
+            <div class="result-count">${v.count}</div>
+            <div class="result-pct">${Math.round(v.count / totalPicks * 100)}%</div>
+          </div>
+        `).join('');
+
+      // Votes table
+      const tbody = document.getElementById('votesBody');
+      if (votes.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No votes yet</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = votes.map((vote, idx) => `
+        <tr>
+          <td style="color: var(--text-muted); font-size: 0.8rem;">${idx + 1}</td>
+          <td><strong>${escapeHtml(vote.name)}</strong></td>
+          <td>
+            <div class="vote-picks">
+              ${vote.picks.map(p => `<span class="vote-pick-badge">${getLetter(p)}</span>`).join('')}
+            </div>
+          </td>
+          <td><div class="vote-note">${vote.note ? escapeHtml(vote.note) : '<span style="opacity:0.4">--</span>'}</div></td>
+          <td><span class="vote-time">${formatDate(vote.timestamp)}</span></td>
+          <td><button class="btn btn-danger btn-sm" onclick="deleteVote(${idx})">Delete</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    document.getElementById('clearAllBtn').addEventListener('click', clearAll);
+
+    render();
+  </script>
+</body>
+</html>

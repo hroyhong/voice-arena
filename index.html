@@ -6,32 +6,35 @@
   <title>Voice Arena — Pick Your Favorites</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #07070b;
-      --surface: #0e0e16;
-      --card: #14141e;
-      --card-hover: #1a1a27;
-      --card-selected: #1a1820;
-      --border: #25253a;
-      --border-selected: #d4a03c;
-      --accent: #d4a03c;
-      --accent-dim: #d4a03c30;
-      --accent-glow: 0 0 20px #d4a03c30, 0 0 40px #d4a03c15;
-      --text: #e8e4e0;
-      --text-secondary: #a8a4a0;
-      --text-muted: #605c68;
-      --radius: 12px;
-      --radius-sm: 8px;
+      --bg: #F6F1EB;
+      --card: #FFFDF9;
+      --card-hover: #FFF9F2;
+      --card-selected: #f0f7f6;
+      --border: #DDD5CB;
+      --border-selected: #008481;
+      --accent: #008481;
+      --accent-light: #f0f7f6;
+      --accent-hover: #00726f;
+      --vermillion: #C04040;
+      --text: #2C2420;
+      --text-secondary: #5C5650;
+      --text-muted: #8C8178;
+      --muted-bg: #EDE8E2;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow-card: 0 1px 4px rgba(44, 36, 32, 0.05);
+      --shadow-card-hover: 0 4px 16px rgba(44, 36, 32, 0.08);
     }
 
     html { font-size: 16px; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Crimson Pro', serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -39,24 +42,14 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Rice paper texture */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(ellipse at 20% 0%, #d4a03c08 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 100%, #4a8fe808 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 256px;
+      opacity: 0.2;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 600px;
       pointer-events: none;
       z-index: 0;
     }
@@ -64,7 +57,7 @@
     .app {
       position: relative;
       z-index: 1;
-      max-width: 900px;
+      max-width: 860px;
       margin: 0 auto;
       padding: 2rem 1.5rem;
       min-height: 100vh;
@@ -89,37 +82,35 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      background: var(--accent-dim);
-      border: 1px solid var(--border);
+      padding: 0.35rem 0.9rem;
+      background: var(--accent-light);
+      border: 1px solid #a8e0de;
       border-radius: 100px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--accent);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       font-weight: 600;
+      font-family: 'Crimson Pro', serif;
       margin-bottom: 2rem;
       animation: fadeIn 0.6s ease both;
     }
 
     .welcome h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 800;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 7vw, 4.5rem);
+      font-weight: 700;
       line-height: 1.1;
       margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--text);
       animation: fadeIn 0.6s ease 0.1s both;
     }
 
     .welcome p {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      max-width: 440px;
-      line-height: 1.6;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 420px;
+      line-height: 1.7;
       margin-bottom: 2.5rem;
       animation: fadeIn 0.6s ease 0.2s both;
     }
@@ -128,44 +119,46 @@
       display: flex;
       gap: 0.75rem;
       width: 100%;
-      max-width: 400px;
+      max-width: 380px;
       animation: fadeIn 0.6s ease 0.3s both;
     }
 
     .name-input {
       flex: 1;
-      padding: 0.85rem 1.2rem;
-      background: var(--surface);
+      padding: 0.8rem 1.1rem;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
+      font-family: 'Crimson Pro', serif;
+      font-size: 1.05rem;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow-card);
     }
     .name-input::placeholder { color: var(--text-muted); }
     .name-input:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-dim);
+      box-shadow: 0 0 0 3px rgba(0, 132, 129, 0.1);
     }
 
     .enter-btn {
-      padding: 0.85rem 1.8rem;
+      padding: 0.8rem 1.6rem;
       background: var(--accent);
-      color: #0a0a0f;
+      color: #fff;
       border: none;
       border-radius: var(--radius);
-      font-family: 'Syne', sans-serif;
+      font-family: 'Cormorant Garamond', serif;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
       white-space: nowrap;
     }
     .enter-btn:hover {
+      background: var(--accent-hover);
       transform: translateY(-1px);
-      box-shadow: var(--accent-glow);
+      box-shadow: 0 4px 12px rgba(0, 132, 129, 0.2);
     }
     .enter-btn:active { transform: translateY(0); }
     .enter-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
@@ -175,44 +168,47 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
       flex-wrap: wrap;
       gap: 1rem;
     }
 
     .arena-header h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
       font-weight: 700;
+      color: var(--text);
     }
 
     .selection-counter {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--surface);
+      gap: 0.4rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 100px;
       font-size: 0.85rem;
-      color: var(--text-secondary);
+      color: var(--text-muted);
+      box-shadow: var(--shadow-card);
     }
     .selection-counter .count {
       font-weight: 700;
       color: var(--accent);
-      font-family: 'Syne', sans-serif;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
     }
 
     .arena-subtitle {
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       margin-bottom: 1.5rem;
     }
 
     .voice-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+      gap: 0.85rem;
       padding-bottom: 6rem;
     }
 
@@ -225,11 +221,12 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.25rem;
+      padding: 1.1rem 1.25rem;
       transition: all 0.25s ease;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      box-shadow: var(--shadow-card);
       animation: fadeIn 0.4s ease both;
     }
 
@@ -245,78 +242,74 @@
 
     .voice-card:hover {
       background: var(--card-hover);
-      border-color: #35354a;
+      box-shadow: var(--shadow-card-hover);
     }
 
     .voice-card.selected {
       background: var(--card-selected);
       border-color: var(--border-selected);
-      box-shadow: var(--accent-glow);
+      box-shadow: 0 0 0 1px var(--accent), 0 4px 16px rgba(0, 132, 129, 0.1);
     }
     .voice-card.selected::before { transform: scaleX(1); }
 
     .voice-card.disabled {
-      opacity: 0.45;
+      opacity: 0.4;
       cursor: not-allowed;
     }
     .voice-card.disabled:hover {
       background: var(--card);
-      border-color: var(--border);
+      box-shadow: var(--shadow-card);
     }
 
-    .voice-card:nth-child(1) { animation-delay: 0.05s; }
-    .voice-card:nth-child(2) { animation-delay: 0.1s; }
-    .voice-card:nth-child(3) { animation-delay: 0.15s; }
-    .voice-card:nth-child(4) { animation-delay: 0.2s; }
-    .voice-card:nth-child(5) { animation-delay: 0.25s; }
-    .voice-card:nth-child(6) { animation-delay: 0.3s; }
-    .voice-card:nth-child(7) { animation-delay: 0.35s; }
-    .voice-card:nth-child(8) { animation-delay: 0.4s; }
-    .voice-card:nth-child(9) { animation-delay: 0.45s; }
-    .voice-card:nth-child(10) { animation-delay: 0.5s; }
+    .voice-card:nth-child(1) { animation-delay: 0.03s; }
+    .voice-card:nth-child(2) { animation-delay: 0.06s; }
+    .voice-card:nth-child(3) { animation-delay: 0.09s; }
+    .voice-card:nth-child(4) { animation-delay: 0.12s; }
+    .voice-card:nth-child(5) { animation-delay: 0.15s; }
+    .voice-card:nth-child(6) { animation-delay: 0.18s; }
+    .voice-card:nth-child(7) { animation-delay: 0.21s; }
+    .voice-card:nth-child(8) { animation-delay: 0.24s; }
+    .voice-card:nth-child(9) { animation-delay: 0.27s; }
+    .voice-card:nth-child(10) { animation-delay: 0.3s; }
 
     .card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
     }
 
     .voice-info {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.7rem;
     }
 
-    .voice-number {
-      width: 32px;
-      height: 32px;
+    .voice-letter {
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--surface);
+      background: var(--muted-bg);
       border-radius: var(--radius-sm);
-      font-family: 'Syne', sans-serif;
+      font-family: 'Cormorant Garamond', serif;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 1.1rem;
       color: var(--text-muted);
       flex-shrink: 0;
       transition: all 0.2s;
     }
-    .voice-card.selected .voice-number {
+    .voice-card.selected .voice-letter {
       background: var(--accent);
-      color: #0a0a0f;
+      color: #fff;
     }
 
-    .voice-name {
+    .voice-label {
+      font-family: 'Cormorant Garamond', serif;
       font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    .voice-tag {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.15rem;
+      font-size: 1.1rem;
+      color: var(--text);
     }
 
     .select-check {
@@ -371,16 +364,16 @@
     .audio-player {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.7rem;
     }
 
     .play-btn {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--surface);
+      background: var(--muted-bg);
       border: 1px solid var(--border);
       border-radius: 50%;
       cursor: pointer;
@@ -391,25 +384,24 @@
     .play-btn:hover {
       background: var(--accent);
       border-color: var(--accent);
-      color: #0a0a0f;
+      color: #fff;
     }
-    .play-btn svg { width: 14px; height: 14px; }
+    .play-btn svg { width: 13px; height: 13px; }
 
     .progress-wrap {
       flex: 1;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
     .progress-bar {
       flex: 1;
-      height: 4px;
-      background: var(--surface);
+      height: 3px;
+      background: var(--muted-bg);
       border-radius: 100px;
       overflow: hidden;
       cursor: pointer;
-      position: relative;
     }
 
     .progress-fill {
@@ -424,7 +416,7 @@
       font-size: 0.7rem;
       color: var(--text-muted);
       font-variant-numeric: tabular-nums;
-      min-width: 32px;
+      min-width: 30px;
       text-align: right;
     }
 
@@ -432,31 +424,52 @@
     .submit-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      padding: 1.25rem 2rem;
-      background: linear-gradient(to top, var(--bg) 60%, transparent);
+      padding: 1rem 1.5rem 1.25rem;
+      background: linear-gradient(to top, var(--bg) 70%, transparent);
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
       transform: translateY(100%);
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 10;
     }
     .submit-bar.visible { transform: translateY(0); }
 
+    .note-input {
+      width: 100%;
+      max-width: 480px;
+      padding: 0.65rem 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.95rem;
+      outline: none;
+      resize: none;
+      transition: border-color 0.2s;
+      box-shadow: var(--shadow-card);
+    }
+    .note-input::placeholder { color: var(--text-muted); }
+    .note-input:focus { border-color: var(--accent); }
+
     .submit-btn {
-      padding: 1rem 3rem;
+      padding: 0.85rem 2.5rem;
       background: var(--accent);
-      color: #0a0a0f;
+      color: #fff;
       border: none;
       border-radius: var(--radius);
-      font-family: 'Syne', sans-serif;
+      font-family: 'Cormorant Garamond', serif;
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
     }
     .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--accent-glow);
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 132, 129, 0.2);
     }
 
     /* ===== THANKS ===== */
@@ -471,10 +484,10 @@
     .thanks.active { display: flex; }
 
     .thanks-icon {
-      width: 64px;
-      height: 64px;
-      background: var(--accent-dim);
-      border: 1px solid var(--border);
+      width: 60px;
+      height: 60px;
+      background: var(--accent-light);
+      border: 1px solid #a8e0de;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -482,124 +495,81 @@
       margin-bottom: 1.5rem;
       animation: fadeIn 0.5s ease both;
     }
-    .thanks-icon svg { width: 28px; height: 28px; color: var(--accent); }
+    .thanks-icon svg { width: 26px; height: 26px; color: var(--accent); }
 
     .thanks h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: 2rem;
-      font-weight: 800;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
       margin-bottom: 0.75rem;
+      color: var(--text);
       animation: fadeIn 0.5s ease 0.1s both;
     }
 
     .thanks > p {
-      color: var(--text-secondary);
-      font-size: 1rem;
-      line-height: 1.6;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
       max-width: 400px;
       animation: fadeIn 0.5s ease 0.15s both;
     }
 
     .picks-summary {
       display: flex;
-      gap: 1rem;
-      margin: 2rem 0;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
       flex-wrap: wrap;
       justify-content: center;
       animation: fadeIn 0.5s ease 0.2s both;
     }
 
     .pick-chip {
-      padding: 0.6rem 1.2rem;
-      background: var(--card);
-      border: 1px solid var(--border-selected);
+      padding: 0.5rem 1.1rem;
+      background: var(--accent-light);
+      border: 1px solid #a8e0de;
       border-radius: 100px;
       font-weight: 600;
       color: var(--accent);
-    }
-
-    /* Results */
-    .results-section {
-      width: 100%;
-      max-width: 500px;
-      margin-top: 2.5rem;
-      text-align: left;
-      animation: fadeIn 0.5s ease 0.3s both;
-    }
-
-    .results-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 1.25rem;
-      color: var(--text-secondary);
-    }
-
-    .result-row {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .result-name {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      min-width: 130px;
-      text-align: right;
-    }
-
-    .result-bar-track {
-      flex: 1;
-      height: 20px;
-      background: var(--surface);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .result-bar-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 4px;
-      min-width: 2px;
-      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .result-count {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      min-width: 24px;
-      font-variant-numeric: tabular-nums;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
     }
 
     .vote-again-btn {
       margin-top: 2rem;
-      padding: 0.7rem 1.5rem;
+      padding: 0.6rem 1.3rem;
       background: transparent;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Crimson Pro', serif;
       font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.2s;
-      animation: fadeIn 0.5s ease 0.4s both;
+      animation: fadeIn 0.5s ease 0.3s both;
     }
     .vote-again-btn:hover {
       border-color: var(--accent);
       color: var(--accent);
     }
 
+    /* Brush divider */
+    .brush-divider {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--text), transparent);
+      opacity: 0.12;
+      margin: 1.5rem auto;
+    }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+    ::-webkit-scrollbar-thumb { background: rgba(44, 36, 32, 0.12); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(44, 36, 32, 0.25); }
   </style>
 </head>
 <body>
@@ -607,11 +577,11 @@
     <!-- Welcome -->
     <div class="screen welcome active" id="welcome">
       <div class="welcome-badge">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
         Voice Comparison
       </div>
       <h1>Voice Arena</h1>
-      <p>Listen to 10 unique Chinese voices. Pick your 2 favorites. Help us choose the perfect voice for Fluentide Radio.</p>
+      <p>Listen to 10 unique Chinese voices. Pick your 2 favorites. Help us choose the perfect voice.</p>
       <div class="name-input-group">
         <input type="text" class="name-input" id="nameInput" placeholder="Your name" autocomplete="off" />
         <button class="enter-btn" id="enterBtn" disabled>Enter</button>
@@ -632,6 +602,7 @@
 
     <!-- Submit Bar -->
     <div class="submit-bar" id="submitBar">
+      <input type="text" class="note-input" id="noteInput" placeholder="Any thoughts? Leave a note (optional)" />
       <button class="submit-btn" id="submitBtn">Submit My Votes</button>
     </div>
 
@@ -640,26 +611,28 @@
       <div class="thanks-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       </div>
-      <h2>Vote Recorded!</h2>
+      <h2>Thank You!</h2>
       <p>Thanks, <strong id="thanksName"></strong>. Your picks have been saved.</p>
       <div class="picks-summary" id="picksSummary"></div>
-      <div class="results-section" id="resultsSection"></div>
+      <div class="brush-divider"></div>
       <button class="vote-again-btn" id="voteAgainBtn">Vote Again</button>
     </div>
   </div>
 
   <script>
+    const LABELS = 'ABCDEFGHIJ'.split('');
+
     const VOICES = [
-      { id: 'male-qn-badao', file: '1male-qn-badao.mp3', name: 'QN Badao', tag: 'Male' },
-      { id: 'female-chengshu', file: '1female-chengshu-jingpin.mp3', name: 'Chengshu Jingpin', tag: 'Female' },
-      { id: 'lengdan-xiongzhang', file: '1lengdan_xiongzhang.mp3', name: 'Lengdan Xiongzhang', tag: 'Cool' },
-      { id: 'badao-shaoye', file: '1badao_shaoye.mp3', name: 'Badao Shaoye', tag: 'Bold' },
-      { id: 'tianxin-xiaoling', file: '1tianxin_xiaoling.mp3', name: 'Tianxin Xiaoling', tag: 'Sweet' },
-      { id: 'reliable-exec', file: '1Chinese_(Mandarin)_Reliable_Executive.mp3', name: 'Reliable Executive', tag: 'Professional' },
-      { id: 'news-anchor', file: '1Chinese_(Mandarin)_News_Anchor.mp3', name: 'News Anchor', tag: 'Formal' },
-      { id: 'lyrical-voice', file: '1Chinese_(Mandarin)_Lyrical_Voice.mp3', name: 'Lyrical Voice', tag: 'Melodic' },
-      { id: 'radio-host', file: '1Chinese_(Mandarin)_Radio_Host.mp3', name: 'Radio Host', tag: 'Warm' },
-      { id: 'warm-aunt', file: '1Chinese_(Mandarin)_Warm-HeartedAunt.mp3', name: 'Warm-Hearted Aunt', tag: 'Friendly' },
+      { id: 'male-qn-badao', file: '1male-qn-badao.mp3' },
+      { id: 'female-chengshu', file: '1female-chengshu-jingpin.mp3' },
+      { id: 'lengdan-xiongzhang', file: '1lengdan_xiongzhang.mp3' },
+      { id: 'badao-shaoye', file: '1badao_shaoye.mp3' },
+      { id: 'tianxin-xiaoling', file: '1tianxin_xiaoling.mp3' },
+      { id: 'reliable-exec', file: '1Chinese_(Mandarin)_Reliable_Executive.mp3' },
+      { id: 'news-anchor', file: '1Chinese_(Mandarin)_News_Anchor.mp3' },
+      { id: 'lyrical-voice', file: '1Chinese_(Mandarin)_Lyrical_Voice.mp3' },
+      { id: 'radio-host', file: '1Chinese_(Mandarin)_Radio_Host.mp3' },
+      { id: 'warm-aunt', file: '1Chinese_(Mandarin)_Warm-HeartedAunt.mp3' },
     ];
 
     let userName = '';
@@ -667,34 +640,25 @@
     let currentAudio = null;
     let currentCard = null;
 
-    // Storage
     const STORAGE_KEY = 'voice-arena-votes';
     function getVotes() {
       try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
       catch { return []; }
     }
-    function saveVote(name, picks) {
+    function saveVote(name, picks, note) {
       const votes = getVotes();
-      votes.push({ name, picks, timestamp: Date.now() });
+      votes.push({ name, picks, note: note || '', timestamp: Date.now() });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
     }
-    function getTallies() {
-      const votes = getVotes();
-      const tallies = {};
-      VOICES.forEach(v => tallies[v.id] = 0);
-      votes.forEach(v => v.picks.forEach(p => { if (tallies[p] !== undefined) tallies[p]++; }));
-      return tallies;
-    }
 
-    // DOM
     const nameInput = document.getElementById('nameInput');
     const enterBtn = document.getElementById('enterBtn');
     const voiceGrid = document.getElementById('voiceGrid');
     const selCount = document.getElementById('selCount');
     const submitBar = document.getElementById('submitBar');
     const submitBtn = document.getElementById('submitBtn');
+    const noteInput = document.getElementById('noteInput');
 
-    // Welcome
     nameInput.addEventListener('input', () => {
       enterBtn.disabled = nameInput.value.trim().length === 0;
     });
@@ -710,27 +674,24 @@
       buildGrid();
     }
 
-    // Build voice grid
     function buildGrid() {
       voiceGrid.innerHTML = '';
       VOICES.forEach((voice, i) => {
+        const letter = LABELS[i];
         const card = document.createElement('div');
         card.className = 'voice-card';
         card.dataset.id = voice.id;
         card.innerHTML = `
           <div class="card-top">
             <div class="voice-info">
-              <div class="voice-number">${i + 1}</div>
-              <div>
-                <div class="voice-name">${voice.name}</div>
-                <div class="voice-tag">${voice.tag}</div>
-              </div>
+              <div class="voice-letter">${letter}</div>
+              <div class="voice-label">Voice ${letter}</div>
               <div class="equalizer">
                 <span></span><span></span><span></span><span></span>
               </div>
             </div>
             <div class="select-check">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
@@ -749,19 +710,16 @@
           </div>
         `;
 
-        const playBtn = card.querySelector('.play-btn');
-        playBtn.addEventListener('click', (e) => {
+        card.querySelector('.play-btn').addEventListener('click', (e) => {
           e.stopPropagation();
           togglePlay(voice, card);
         });
 
-        const progressBar = card.querySelector('.progress-bar');
-        progressBar.addEventListener('click', (e) => {
+        card.querySelector('.progress-bar').addEventListener('click', (e) => {
           e.stopPropagation();
-          if (currentAudio && currentCard === card) {
-            const rect = progressBar.getBoundingClientRect();
-            const pct = (e.clientX - rect.left) / rect.width;
-            currentAudio.currentTime = pct * currentAudio.duration;
+          if (currentAudio && currentCard === card && currentAudio.duration) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            currentAudio.currentTime = ((e.clientX - rect.left) / rect.width) * currentAudio.duration;
           }
         });
 
@@ -770,7 +728,6 @@
       });
     }
 
-    // Audio playback
     function togglePlay(voice, card) {
       if (currentAudio && currentCard === card) {
         if (currentAudio.paused) {
@@ -784,23 +741,18 @@
         }
         return;
       }
-
       stopCurrentAudio();
-
       const audio = new Audio(`voices/${voice.file}`);
       currentAudio = audio;
       currentCard = card;
-
       const fill = card.querySelector('.progress-fill');
       const timeDisplay = card.querySelector('.time-display');
-
       audio.addEventListener('timeupdate', () => {
         if (audio.duration) {
           fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
           timeDisplay.textContent = formatTime(audio.currentTime);
         }
       });
-
       audio.addEventListener('ended', () => {
         card.classList.remove('playing');
         updatePlayIcon(card, false);
@@ -809,7 +761,6 @@
         currentAudio = null;
         currentCard = null;
       });
-
       audio.play();
       card.classList.add('playing');
       updatePlayIcon(card, true);
@@ -830,18 +781,15 @@
       }
     }
 
-    function updatePlayIcon(card, isPlaying) {
-      card.querySelector('.icon-play').style.display = isPlaying ? 'none' : 'block';
-      card.querySelector('.icon-pause').style.display = isPlaying ? 'block' : 'none';
+    function updatePlayIcon(card, playing) {
+      card.querySelector('.icon-play').style.display = playing ? 'none' : 'block';
+      card.querySelector('.icon-pause').style.display = playing ? 'block' : 'none';
     }
 
     function formatTime(s) {
-      const m = Math.floor(s / 60);
-      const sec = Math.floor(s % 60);
-      return `${m}:${sec.toString().padStart(2, '0')}`;
+      return `${Math.floor(s / 60)}:${Math.floor(s % 60).toString().padStart(2, '0')}`;
     }
 
-    // Selection
     function toggleSelect(id, card) {
       if (selected.has(id)) {
         selected.delete(id);
@@ -850,24 +798,18 @@
         selected.add(id);
         card.classList.add('selected');
       }
-
       selCount.textContent = selected.size;
       submitBar.classList.toggle('visible', selected.size === 2);
-
       document.querySelectorAll('.voice-card').forEach(c => {
         const cId = c.dataset.id;
-        if (selected.size >= 2 && !selected.has(cId)) {
-          c.classList.add('disabled');
-        } else {
-          c.classList.remove('disabled');
-        }
+        c.classList.toggle('disabled', selected.size >= 2 && !selected.has(cId));
       });
     }
 
-    // Submit
     submitBtn.addEventListener('click', () => {
       const picks = [...selected];
-      saveVote(userName, picks);
+      const note = noteInput.value.trim();
+      saveVote(userName, picks, note);
       stopCurrentAudio();
       showThanks(picks);
     });
@@ -876,34 +818,16 @@
       document.getElementById('arena').classList.remove('active');
       submitBar.classList.remove('visible');
       document.getElementById('thanks').classList.add('active');
-
       document.getElementById('thanksName').textContent = userName;
       document.getElementById('picksSummary').innerHTML = picks.map(id => {
-        const v = VOICES.find(v => v.id === id);
-        return `<div class="pick-chip">${v.name}</div>`;
+        const i = VOICES.findIndex(v => v.id === id);
+        return `<div class="pick-chip">Voice ${LABELS[i]}</div>`;
       }).join('');
-
-      const tallies = getTallies();
-      const maxVotes = Math.max(...Object.values(tallies), 1);
-      const sorted = VOICES.slice().sort((a, b) => tallies[b.id] - tallies[a.id]);
-
-      document.getElementById('resultsSection').innerHTML = `
-        <div class="results-title">Current Results (${getVotes().length} votes)</div>
-        ${sorted.map(v => `
-          <div class="result-row">
-            <div class="result-name">${v.name}</div>
-            <div class="result-bar-track">
-              <div class="result-bar-fill" style="width: ${tallies[v.id] / maxVotes * 100}%"></div>
-            </div>
-            <div class="result-count">${tallies[v.id]}</div>
-          </div>
-        `).join('')}
-      `;
     }
 
-    // Vote again
     document.getElementById('voteAgainBtn').addEventListener('click', () => {
       selected.clear();
+      noteInput.value = '';
       document.getElementById('thanks').classList.remove('active');
       document.getElementById('arena').classList.add('active');
       buildGrid();
